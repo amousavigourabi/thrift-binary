@@ -1,3 +1,5 @@
 # Thrift binary
 
-This repository documents how the binaries for the thrift-compiler-jar repository were built to aid with their reproducibility.
+This repository builds the binaries for the thrift-compiler-jar repository to aid with their reproducibility.
+
+As Thrift distributes Windows binaries, they can be used straight from the source. For Linux, this repository builds the x86, ARMv6, AArch64, S390x, and ppc64le binaries.
