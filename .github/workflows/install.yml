@@ -1,0 +1,88 @@
+name: Build Thrift
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  post-0-9-3:
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [ armv6, aarch64, s390x, ppc64le, x86 ]
+        version: [ 0.9.3, 0.10.0, 0.11.0, 0.12.0, 0.13.0, 0.14.0, 0.14.1, 0.14.2, 0.15.0, 0.16.0, 0.17.0, 0.18.0, 0.18.1 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup
+        run: |
+          mkdir artifacts
+      - name: Build Thrift ${{ matrix.version }} on ${{ matrix.arch }}
+        uses: uraimo/run-on-arch-action@v2
+        if: ${{ matrix.arch != 'x86' }}
+        with:
+          arch: ${{ matrix.arch }}
+          distro: alpine_latest
+          dockerRunArgs: |
+            --volume "$(pwd)/artifacts:/artifacts"
+            --volume "$(pwd)/linux:/linux"
+          shell: /bin/sh
+          run: |
+            apk --no-cache update
+            apk add wget tar make
+            apk add g++ boost-dev
+            apk add autoconf automake
+            ./linux/compile-post-0-9-3.sh ${{ matrix.version }}
+            mv /usr/local/bin/thrift /artifacts/thrift
+      - name: Build Thrift ${{ matrix.version }} on ${{ matrix.arch }}
+        if: ${{ matrix.arch == 'x86' }}
+        run: |
+          sudo apt-get install -y libboost-all-dev
+          ./linux/compile-post-0-9-3.sh ${{ matrix.version }}
+          mv /usr/local/bin/thrift artifacts/thrift
+      - name: Upload binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: thrift-binary-${{ matrix.arch }}-${{ matrix.version }}
+          path: artifacts/thrift
+  pre-0-9-2:
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [ armv6, aarch64, s390x, ppc64le, x86 ]
+        version: [ 0.6.0, 0.6.1, 0.7.0, 0.8.0, 0.9.0, 0.9.1, 0.9.2 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup
+        run: |
+          mkdir artifacts
+      - name: Build Thrift ${{ matrix.version }} on ${{ matrix.arch }}
+        uses: uraimo/run-on-arch-action@v2
+        if: ${{ matrix.arch != 'x86' }}
+        with:
+          arch: ${{ matrix.arch }}
+          distro: alpine_latest
+          dockerRunArgs: |
+            --volume "$(pwd)/artifacts:/artifacts"
+            --volume "$(pwd)/linux:/linux"
+          shell: /bin/sh
+          run: |
+            apk --no-cache update
+            apk add wget tar make
+            apk add g++ boost-dev
+            apk add autoconf automake
+            ./linux/compile-pre-0-9-2.sh ${{ matrix.version }}
+            mv /usr/local/bin/thrift /artifacts/thrift
+      - name: Build Thrift ${{ matrix.version }} on ${{ matrix.arch }}
+        if: ${{ matrix.arch == 'x86' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cabal-install
+          ./linux/compile-pre-0-9-2.sh ${{ matrix.version }}
+          mv /usr/local/bin/thrift artifacts/thrift
+      - name: Upload binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: thrift-binary-${{ matrix.arch }}-${{ matrix.version }}
+          path: artifacts/thrift
