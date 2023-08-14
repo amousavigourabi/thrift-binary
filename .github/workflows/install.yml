@@ -39,10 +39,10 @@ jobs:
           git config pull.rebase true
           git fetch --all
           git checkout -b release-dev origin/release-dev
-          mkdir ${{ matrix.version }}
+          mkdir -p ${{ matrix.version }}
           mv $(pwd)/artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
           git stage ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
-          git commit -m "Upload Thrift binaries"
+          git commit -m "Upload Thrift binaries" -m "Upload the Thrift ${{ matrix.version }} binary for ${{ matrix.arch }} machines."
           git pull origin release-dev
           git push origin release-dev
   pre-0-9-2:
@@ -81,9 +81,9 @@ jobs:
           git config pull.rebase true
           git fetch --all
           git checkout -b release-dev origin/release-dev
-          mkdir ${{ matrix.version }}
+          mkdir -p ${{ matrix.version }}
           mv $(pwd)/artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
           git stage ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
-          git commit -m "Upload Thrift binaries"
+          git commit -m "Upload Thrift binaries" -m "Upload the Thrift ${{ matrix.version }} binary for ${{ matrix.arch }} machines."
           git pull origin release-dev
           git push origin release-dev
