@@ -85,5 +85,7 @@ jobs:
           mv $(pwd)/artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
           git stage ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
           git commit -m "Upload Thrift binaries" -m "Upload the Thrift ${{ matrix.version }} binary for ${{ matrix.arch }} machines."
-          git pull origin release-dev
-          git push origin release-dev
+          until git push origin release-dev
+          do
+            git pull origin release-dev
+          done
