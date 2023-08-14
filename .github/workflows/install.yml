@@ -38,7 +38,8 @@ jobs:
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           git fetch --all
           git checkout -b release-dev origin/release-dev
-          mv artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
+          mkdir ${{ matrix.version }}
+          mv $(pwd)/artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
           git stage ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
           git commit -m "Upload Thrift binaries"
           git pull origin release-dev
@@ -78,7 +79,8 @@ jobs:
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           git fetch --all
           git checkout -b release-dev origin/release-dev
-          mv artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
+          mkdir ${{ matrix.version }}
+          mv $(pwd)/artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
           git stage ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
           git commit -m "Upload Thrift binaries"
           git pull origin release-dev
