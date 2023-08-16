@@ -84,6 +84,6 @@ jobs:
           message: |
             Upload Thrift binaries
             Upload the Thrift ${{ matrix.version }} binary for ${{ matrix.arch }} machines.
-          files: ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
-          branch: release-dev
+          files: '${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe .gitattributes'
+          branch: 'release-dev'
           rebase: true
