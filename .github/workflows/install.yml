@@ -26,12 +26,8 @@ jobs:
             --volume "$(pwd)/linux:/linux"
           shell: /bin/sh
           run: |
-            apt-get -y update
-            apt-get -y install wget tar make
-            apt-get -y install g++ libboost-all-dev
-            apt-get -y install autoconf automake
-            ./linux/compile-post-0-9-3.sh ${{ matrix.version }}
-            mv /usr/local/bin/thrift /artifacts/thrift
+            ./linux/dependencies.sh
+            ./linux/compile-post-0-9-3.sh ${{ matrix.version }} --bindir=/artifacts
       - name: Retrieve binary from mount
         run: |
           mkdir -p ${{ matrix.version }}
@@ -68,12 +64,8 @@ jobs:
             --volume "$(pwd)/linux:/linux"
           shell: /bin/sh
           run: |
-            apt-get -y update
-            apt-get -y install wget tar make
-            apt-get -y install g++ libboost-all-dev
-            apt-get -y install autoconf automake
-            ./linux/compile-pre-0-9-2.sh ${{ matrix.version }}
-            mv /usr/local/bin/thrift /artifacts/thrift
+            ./linux/dependencies.sh
+            ./linux/compile-pre-0-9-2.sh ${{ matrix.version }} --bindir=/artifacts
       - name: Retrieve binary from mount
         run: |
           mkdir -p ${{ matrix.version }}
