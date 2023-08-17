@@ -27,7 +27,8 @@ jobs:
           shell: /bin/sh
           run: |
             ./linux/dependencies.sh
-            ./linux/compile-post-0-9-3.sh ${{ matrix.version }} --bindir=/artifacts
+            ./linux/compile-post-0-9-3.sh ${{ matrix.version }}
+            mv /usr/local/bin/thrift /artifacts/thrift
       - name: Retrieve binary from mount
         run: |
           mkdir -p ${{ matrix.version }}
@@ -65,7 +66,8 @@ jobs:
           shell: /bin/sh
           run: |
             ./linux/dependencies.sh
-            ./linux/compile-pre-0-9-2.sh ${{ matrix.version }} --bindir=/artifacts
+            ./linux/compile-pre-0-9-2.sh ${{ matrix.version }}
+            mv /usr/local/bin/thrift /artifacts/thrift
       - name: Retrieve binary from mount
         run: |
           mkdir -p ${{ matrix.version }}
