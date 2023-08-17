@@ -15,7 +15,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup
         run: |
-          ls -la
           mkdir artifacts
       - name: Build Thrift ${{ matrix.version }} on ${{ matrix.arch }}
         uses: amousavigourabi/run-on-arch-action@v0
@@ -35,7 +34,6 @@ jobs:
             mv /usr/local/bin/thrift /artifacts/thrift
       - name: Retrieve binary from mount
         run: |
-          ls -la
           mkdir -p ${{ matrix.version }}
           mv $(pwd)/artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
       - name: Upload binary
@@ -44,8 +42,8 @@ jobs:
           message: |
             Upload Thrift binaries
             Upload the Thrift ${{ matrix.version }} binary for ${{ matrix.arch }} machines.
-          files: ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
-          branch: release-dev
+          files: '${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe .gitattributes'
+          branch: 'release-dev'
           rebase: true
   pre-0-9-2:
     strategy:
@@ -59,7 +57,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup
         run: |
-          ls -la
           mkdir artifacts
       - name: Build Thrift ${{ matrix.version }} on ${{ matrix.arch }}
         uses: amousavigourabi/run-on-arch-action@v0
@@ -79,7 +76,6 @@ jobs:
             mv /usr/local/bin/thrift /artifacts/thrift
       - name: Retrieve binary from mount
         run: |
-          ls -la
           mkdir -p ${{ matrix.version }}
           mv $(pwd)/artifacts/thrift ${{ matrix.version }}/thrift-linux_${{ matrix.arch }}.exe
       - name: Upload binary
